@@ -5,15 +5,15 @@
     <gisMod class="">
 
     </gisMod>
-    <div class="leftLayerTreePanelBack">
+    <!-- <div class="leftLayerTreePanelBack">
 
     </div>
     <div class="leftLayerTreePanel">
-      <!--水文水质站，蓝藻站、环湖河流、水利工程(引江济太)，水功能区（一级，二级、三级、四级），省界断面（断面，河流，湖泊）水源地、排污口、大型水库-->
+      <!水文水质站，蓝藻站、环湖河流、水利工程(引江济太)，水功能区（一级，二级、三级、四级），省界断面（断面，河流，湖泊）水源地、排污口、大型水库>
       <leftLayerTreePanel>
 
       </leftLayerTreePanel>
-    </div>
+    </div> -->
   </div>
 </template>
 

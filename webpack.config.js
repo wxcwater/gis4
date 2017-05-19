@@ -6,7 +6,8 @@ module.exports = {
     'gqindex':'./src/gqIndex/gqIndexEntry.js',
     'example':'./src/main.js',
     'zbszindex':'./src/szIndex/zbszIndexEntry.js',
-    'threeDExp':'./src/map3D/3Dentry.js'
+    'threeDExp':'./src/th3D/3Dentry.js',
+    'threeGis':'./src/3Dgis/3Dentry.js'
 
   },
   output: {

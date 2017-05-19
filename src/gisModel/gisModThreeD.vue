@@ -48,10 +48,11 @@ export default {
           container: "mapNode",  // Reference to the DOM node that will contain the view
           map: map , // References the map object created in step 3
           scale: 66000000,          // Sets the initial scale to 1:50,000,000
-          center: [-112, 38]
+          center: [-112, 38],
+          qualityProfile: "high"
         });
         this.view = view;
-        this.map.ground.layers.forEach(function(layer) {
+        this.map.ground.layers.forEach(function(layer) {//地形数据是map提供的，可套用至所有layer @wxcwater
            layer.visible = true;
          });
 
@@ -65,18 +66,23 @@ export default {
                 // heading: 30,
                 // tilt: 60
               })
+              // view.ui.empty("top-left");
+              // view.ui.move([ "navigation-toggle" ], "bottom-left");
+              // view.ui.add([ "compass"], "bottom-left");
             }).otherwise(function(err) {
               // A rejected view indicates a fatal error making it unable to display,
               // this usually means that WebGL is not available, or too old.
               console.error("SceneView rejected:", err);
             });
 
+
+
+            /*点击测试，@wxcwater*/
             view.on("click", function(evt) {
               var screenPoint = {
                 x: evt.x,
                 y: evt.y
               };
-
               // the hitTest() checks to see if any graphics in the view
               // intersect the given screen x, y coordinates
               view.hitTest(screenPoint)
@@ -91,6 +97,7 @@ export default {
 
 
     },
+
     toggleThBaseMapLayer:function(){
         esriLoader.dojoRequire(["esri/layers/MapImageLayer","esri/layers/FeatureLayer","esri/config","esri/core/urlUtils","esri/renderers/SimpleRenderer","esri/symbols/PictureMarkerSymbol","esri/layers/support/Field"],(MapImageLayer,FeatureLayer,esriConfig,urlUtils,SimpleRenderer,PictureMarkerSymbol,Field)=>{
           esriConfig.request.corsEnabledServers.push('10.8.2.153:8399');
