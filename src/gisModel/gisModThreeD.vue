@@ -3,7 +3,6 @@
     <div id="mapNode" style="width:100%;height:769px;">
 
     </div>
-    <button type="button" name="button" @click="toggleThBaseMapLayer()">test</button>
   </div>
 </template>
 
@@ -35,6 +34,7 @@ export default {
       });
     },
     initGisMap:function(){
+      var _self = this;
       this.initEsriLoader();
       esriLoader.dojoRequire(["esri/Map","esri/views/SceneView","esri/config"], (Map, SceneView,esriConfig) => {
       //  esriConfig.request.corsEnabledServers.push({host:'10.8.2.153'});
@@ -69,6 +69,7 @@ export default {
               // view.ui.empty("top-left");
               // view.ui.move([ "navigation-toggle" ], "bottom-left");
               // view.ui.add([ "compass"], "bottom-left");
+              _self.addSomeLayer();
             }).otherwise(function(err) {
               // A rejected view indicates a fatal error making it unable to display,
               // this usually means that WebGL is not available, or too old.
@@ -97,7 +98,72 @@ export default {
 
 
     },
-
+    /*
+      @author:lsj
+    */
+     queryFeatures:function(type){
+        esriLoader.dojoRequire(["esri/tasks/QueryTask", "esri/tasks/support/Query","esri/layers/GraphicsLayer","esri/symbols/SimpleLineSymbol","esri/Graphic"],
+          (QueryTask, Query,GraphicsLayer,SimpleLineSymbol,Graphic)=>{
+          if(type == "river"){
+            var queryTask = new QueryTask({url:"http://10.1.102.129:6080/arcgis/rest/services/china/river_china/MapServer/0"});
+          }else if(type == "province"){
+            var queryTask = new QueryTask({url:"http://10.1.102.129:6080/arcgis/rest/services/china/xzqh_china/MapServer/2"});
+          }else if(type == "dist"){
+            var queryTask = new QueryTask({url:"http://10.1.102.129:6080/arcgis/rest/services/china/xzqh_china/MapServer/1"});
+          }else if(type == "country"){
+            var queryTask = new QueryTask({url:"http://10.1.102.129:6080/arcgis/rest/services/china/xzqh_china/MapServer/0"});
+          }
+          var query = new Query();
+          var rand  = Math.random();
+          query.returnGeometry = true;
+          query.outFields = ["*"];
+          query.where = "FID = 5262 and "+rand+"="+rand;
+          var _self = this;
+          queryTask.execute(query).then(getResults).otherwise(getResultsErr);
+          function getResults(results){
+            var symbol = new SimpleLineSymbol({
+              color: [0,255,255,1],
+              width: "2px",
+              style: "solid"
+            });
+            var gra = new Graphic();
+            gra.attributes = results.features[0].attributes;
+            gra.geometry = results.features[0].geometry;
+            gra.symbol = symbol;
+            var graphicLyr = _self.map.findLayerById("searchResultLayer");
+            if(graphicLyr){
+              graphicLyr.graphics.add(gra);
+            }else{
+              graphicLyr = new GraphicsLayer();
+              graphicLyr.id = 'searchResultLayer';
+              _self.map.add(graphicLyr);
+              graphicLyr.graphics.add(gra);
+            }
+            _self.view.goTo({
+              target: gra.geometry,
+              scale: 4000000,
+              speedFactor:0.01,
+              // heading: 30,
+              tilt: 50
+            })
+          }
+          function getResultsErr(info){
+            console.error("error:",info.message);
+          }
+        });
+      },
+      addSomeLayer:function(){
+        esriLoader.dojoRequire(["esri/layers/MapImageLayer","esri/layers/FeatureLayer","esri/config","esri/core/urlUtils","esri/renderers/SimpleRenderer","esri/symbols/PictureMarkerSymbol","esri/layers/support/Field"],(MapImageLayer,FeatureLayer,esriConfig,urlUtils,SimpleRenderer,PictureMarkerSymbol,Field)=>{
+          var rivermapLyr = new MapImageLayer({
+            url:"http://10.1.102.129:6080/arcgis/rest/services/china/river_china_Tile/MapServer"
+          });
+          var xzqhLineLyr = new MapImageLayer({
+            url:"http://10.1.102.129:6080/arcgis/rest/services/china/xzqh_china_Tile/MapServer"
+          });
+          this.map.add(rivermapLyr);
+          this.map.add(xzqhLineLyr);
+        });
+      },
     toggleThBaseMapLayer:function(){
         esriLoader.dojoRequire(["esri/layers/MapImageLayer","esri/layers/FeatureLayer","esri/config","esri/core/urlUtils","esri/renderers/SimpleRenderer","esri/symbols/PictureMarkerSymbol","esri/layers/support/Field"],(MapImageLayer,FeatureLayer,esriConfig,urlUtils,SimpleRenderer,PictureMarkerSymbol,Field)=>{
           esriConfig.request.corsEnabledServers.push('10.8.2.153:8399');
