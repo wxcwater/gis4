@@ -39,7 +39,7 @@
 
       </div>
       <div class="historyItemContainer">
-        <div class="historyItem">
+        <div class="historyItem" @click="searchTo('黑河','river')">
           <div style="flex-basis:10%">
             <i class="fa fa-clock-o" aria-hidden="true"></i>
           </div>
@@ -57,13 +57,11 @@
 
 
   <div id="searchBarContent" class="searchBarContent" v-show="searchInputFocus && searchText != ''">
-      <div class="historyItemContainer">
-        <div class="historyItem">
-          <div style="flex-basis:10%">
-            <i class="fa fa-clock-o" aria-hidden="true"></i>
-          </div>
+      <div class="searchItemContainer">
+        <div class="historyItem" @click="searchTo('黑河','river')">
+
           <div style="flex-basis:80%">
-            黑河
+            <a >黑河</a>
           </div>
           <div style="right:5px;">
             <p style="font-size:0.5rem;color:#ECF0F1">河流</p>
@@ -90,14 +88,22 @@ export default {
   },
   methods:{
     inputFocus:function(){
-      console.log("focus")
+      console.log("focus");
       this.searchInputFocus = true;
     },
     inputblur:function(){
-      this.searchInputFocus = false;
+      var _self = this;
+      setTimeout(function () {
+       _self.searchInputFocus = false;
+      //  alert(_self);
+    }, 100);
     },
     inputChange:function(){
       console.log(this.searchText);
+    },
+    searchTo:function(keyword,type){
+      // alert(keyword+":"+type);
+      this.$emit("gis_focusTo",{'keyword':keyword,'type':type});
     }
   }
 }
@@ -208,5 +214,17 @@ export default {
 }
 .historyItem:hover{
   background-color: #95A5A6;
+}
+.searchItemContainer{
+  height: 1.3rem;
+  width: 100%;
+  display: flex;
+  padding-top: 5px;
+
+  flex-direction: column;;
+  justify-content: flex-start;;
+  align-items:stretch;
+  background-color: #BDC3C7;
+  border-radius: 0px 0px 5px 5px;
 }
 </style>
