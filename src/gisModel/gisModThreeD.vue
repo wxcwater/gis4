@@ -1,6 +1,6 @@
 <template>
   <div style="width:100%;height:100%">
-    <div id="mapNode" style="width:100%;height:769px;">
+    <div id="mapNode" style="width:100%;height:100%;">
 
     </div>
   </div>
@@ -38,7 +38,6 @@ export default {
       this.initEsriLoader();
       esriLoader.dojoRequire(["esri/Map","esri/views/SceneView","esri/config"], (Map, SceneView,esriConfig) => {
       //  esriConfig.request.corsEnabledServers.push({host:'10.8.2.153'});
-
         let map = new Map({
           basemap: "hybrid",
           ground: "world-elevation"

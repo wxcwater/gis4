@@ -5,8 +5,11 @@
     <gisMod class="" ref="gisMod">
 
     </gisMod>
-    <div class="" style="position:fixed;top:3%;right:3%;width:25%;">
+    <div class="" style="position:fixed;top:3%;right:0%;margin-right:10px;width:25%;">
         <searchBox @gis_focusTo="gisFocusTo" ></searchBox>
+    </div>
+    <div class="" style="position:fixed;bottom:3%;right:0%;margin-right:10px;">
+        <cornerBox ref="cornerBox"></cornerBox>
     </div>
   </div>
 </template>
@@ -15,11 +18,13 @@
 import gisMod from '../gisModel/gisModThreeD.vue'
 // import leftLayerTreePanel from './layerTreePanel.vue'
 import searchBox from '../interfaceComponent/searchBox.vue'
+import cornerBox from '../interfaceComponent/cornerBox.vue'
 export default {
   components: {
     // <my-component> 将只在父模板可用
     'gisMod':gisMod,
     'searchBox':searchBox,
+    'cornerBox':cornerBox,
   },
   name: 'app',
   data () {
@@ -31,6 +36,7 @@ export default {
     gisFocusTo:function(data){
       // alert(data.keyword+"+"+data.type);
       this.$refs.gisMod.queryFeatures('river');
+      this.$refs.cornerBox.showTestInformation();
     }
   }
 }
