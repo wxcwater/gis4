@@ -154,10 +154,10 @@ export default {
       addSomeLayer:function(){
         esriLoader.dojoRequire(["esri/layers/MapImageLayer","esri/layers/FeatureLayer","esri/config","esri/core/urlUtils","esri/renderers/SimpleRenderer","esri/symbols/PictureMarkerSymbol","esri/layers/support/Field"],(MapImageLayer,FeatureLayer,esriConfig,urlUtils,SimpleRenderer,PictureMarkerSymbol,Field)=>{
           var rivermapLyr = new MapImageLayer({
-            url:"http://10.1.102.129:6080/arcgis/rest/services/china/river_china_Tile/MapServer"
+            url:"http://10.1.102.129:6080/arcgis/rest/services/china/river_china_GaoLiang_Tile/MapServer"
           });
           var xzqhLineLyr = new MapImageLayer({
-            url:"http://10.1.102.129:6080/arcgis/rest/services/china/xzqh_china_Tile/MapServer"
+            url:"http://10.1.102.129:6080/arcgis/rest/services/china/xzqh_china_yellow_Tile/MapServer"
           });
           this.map.add(rivermapLyr);
           this.map.add(xzqhLineLyr);
